@@ -5,9 +5,11 @@ import userSlice from "./userSlice";
 
 const store = configureStore({
     reducer: {
-        sth1: productSlice,
-        sth2: userSlice,
+        product: productSlice,
+        user: userSlice,
     }
 })
 
-export default store 
+export default store
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
