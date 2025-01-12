@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { registerUser } from "../../store/authSlice"
 import { Status } from "../../globals/types/type"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 
 function Register() {
@@ -42,7 +42,7 @@ function Register() {
                     <img className="mx-auto h-12 w-auto" src="https://www.svgrepo.com/show/499664/user-happy.svg" alt="" />
 
                     <h2 className="my-3 text-center text-3xl font-bold tracking-tight text-gray-900">
-                        Sign up For an account
+                        Sign up htmlFor an account
                     </h2>
 
 
@@ -80,6 +80,7 @@ function Register() {
                                 Account
                             </button>
                         </div>
+                        <p className="text-blue-500">Wanna login? <Link to='/login'> Go to Login</Link></p>
                     </form>
                 </div>
             </div>
