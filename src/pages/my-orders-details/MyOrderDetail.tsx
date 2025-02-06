@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import Navbar from "../../globals/components/Navbar";
-import { fetchMyOrderDetails } from "../../store/checkoutSlice";
+import { cancelOrderAPI, fetchMyOrderDetails } from "../../store/checkoutSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useEffect } from "react";
-import { IOrderDetail } from "./types";
+import { OrderStatus } from "./types";
 
 
 
@@ -11,6 +11,8 @@ function MyOrderDetail() {
     const dispatch = useAppDispatch()
     const { id } = useParams()
     const { orderDetails } = useAppSelector((store) => store.orders)
+    // const [data] = items.filter((order)=>order.id === id)
+    console.log(orderDetails, "ITEMS")
 
     useEffect(() => {
         if (id) {
@@ -18,12 +20,18 @@ function MyOrderDetail() {
             dispatch(fetchMyOrderDetails(id))
         }
     }, [])
+
+    const cancelOrder = () => {
+        if (id) {
+            dispatch(cancelOrderAPI(id))
+        }
+    }
     return (
         <>
             <Navbar />
             <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
                 <div className="flex justify-start item-start space-y-2 flex-col">
-                    <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #{orderDetails[0]?.orderId}</h1>
+                    <h1 className="text-3xl dark:text-gray lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #{orderDetails[0]?.orderId}</h1>
                     <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{new Date(orderDetails[0]?.createdAt).toLocaleDateString()}</p>
                     <p>Order Status : {orderDetails[0]?.Order?.orderStatus}</p>
                 </div>
@@ -109,7 +117,11 @@ function MyOrderDetail() {
 
                                 </div>
                                 <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                                    <button className="mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base font-medium leading-4 text-gray-800">Edit Details</button>
+                                    {
+                                        orderDetails[0]?.Order?.orderStatus !== OrderStatus?.Cancelled && (
+                                            <button onClick={cancelOrder} className="mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base font-medium leading-4 text-gray-800">Cancel Order</button>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
